@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project name="devops-learn" default="build">
+    <property name="env" value="dev"/>
+    <condition property="env.is.production">
+        <equals arg1="${env}" arg2="production" />
+    </condition>
+
+    <!-- ============================================ -->
+    <!-- Target: prepare base images                  -->
+    <!-- ============================================ -->
+    <target name="prepare_base_images"
+            description="Prepare base images">
+        <!-- ============================================ -->
+        <!-- Target: php-fpm                              -->
+        <!-- Step 1: Pull image                           -->
+        <!-- ============================================ -->
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker pull jslim/devops-learn-base:latest"/>
+        </exec>
+    </target>
+
+    <!-- ============================================ -->
+    <!-- Target: build                                -->
+    <!-- ============================================ -->
+    <target name="build_containers"
+            description="Build containers">
+        <exec executable="/bin/bash" failonerror="true">
+            <env key="TAG" value="${TAG}"/>
+            <env key="ENV" value="${env}"/>
+            <arg value="-c"/>
+            <arg value="docker-compose -f docker/build.yml build --no-cache php-fpm"/>
+        </exec>
+    </target>
+
+    <!-- ============================================ -->
+    <!-- Target: Deploy images                        -->
+    <!-- ============================================ -->
+    <target name="deploy_images"
+            description="Deploy images">
+        <!-- ============================================ -->
+        <!-- Repository: web-php-fpm                      -->
+        <!-- Step 1: Push image                           -->
+        <!-- ============================================ -->
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker push jslim/devops-learn:${TAG}"/>
+        </exec>
+    </target>
+
+    <target name="build"
+            description="Run all tasks"
+            depends="
+            prepare_base_images,
+            build_containers,
+            deploy_images"/>
+</project>
+

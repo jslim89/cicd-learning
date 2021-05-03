@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  php-fpm:
+    image: jslim/devops-learn-base:latest
+    environment:
+      ENV: dev
+    volumes:
+      - ../src:/var/www/app
+      - ./php/app.ini:/usr/local/etc/php/conf.d/app.ini
+
+  nginx:
+    ports:
+      - 8088:80
+      - 4438:443
+    volumes:
+      - ../src:/var/www/app
+      - ./nginx/dev/conf.d/nginx.conf:/etc/nginx/conf.d/app.conf
+
+
+#Docker Networks
+networks:
+  jslim-do-network:
+    driver: bridge

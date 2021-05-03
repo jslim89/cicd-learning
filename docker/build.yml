@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  php-fpm:
+    image: jslim/devops-learn:${TAG}
+    build:
+      context: ../
+      dockerfile: docker/php/Dockerfile
+
+  php-fpm-base:
+    image: jslim/devops-learn-base:${TAG}
+    build:
+      context: ../
+      dockerfile: docker/php/Dockerfile.base

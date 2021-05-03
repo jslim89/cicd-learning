@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project name="devops-learn" default="build" basedir=".">
+
+    <!-- ============================================ -->
+    <!-- Target: build                                -->
+    <!-- ============================================ -->
+    <target name="build_containers"
+            description="Build containers">
+        <exec executable="/bin/bash" failonerror="true">
+            <env key="TAG" value="${TAG}"/>
+            <arg value="-c"/>
+            <arg value="docker-compose -f docker/build.yml build --no-cache php-fpm-base"/>
+        </exec>
+    </target>
+
+    <!-- ============================================ -->
+    <!-- Target: Deploy images                        -->
+    <!-- ============================================ -->
+    <target name="deploy_images"
+            description="Deploy images">
+        <!-- ============================================ -->
+        <!-- Repository: web-php-fpm                      -->
+        <!-- Step 1: Push image                           -->
+        <!-- Step 2: Tag latest to image                  -->
+        <!-- ============================================ -->
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker push jslim/devops-learn-base:${TAG}"/>
+        </exec>
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker image tag jslim/devops-learn-base:${TAG} jslim/devops-learn-base:latest"/>
+        </exec>
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker image push jslim/devops-learn-base:latest"/>
+        </exec>
+    </target>
+
+    <target name="build"
+            description="Run all tasks"
+            depends="
+            build_containers,
+            deploy_images"/>
+</project>
+
