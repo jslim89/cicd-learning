@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project name="devops-learn" default="build" basedir=".">
+
+    <!-- ============================================ -->
+    <!-- Target: Tag image                            -->
+    <!-- ============================================ -->
+    <target name="tag_image"
+            description="Tag images">
+        <!-- ============================================ -->
+        <!-- Repository: devops-learn                     -->
+        <!-- Step 1: Pull image                           -->
+        <!-- Step 2: Tag latest to image                  -->
+        <!-- Step 3: Push image                           -->
+        <!-- ============================================ -->
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker pull jslim/devops-learn:${TAG}"/>
+        </exec>
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker image tag jslim/devops-learn:${TAG} jslim/devops-learn:latest"/>
+        </exec>
+        <exec executable="/bin/bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="docker image push jslim/devops-learn:latest"/>
+        </exec>
+    </target>
+
+    <target name="build"
+            description="Run all tasks"
+            depends="tag_image"/>
+</project>
+

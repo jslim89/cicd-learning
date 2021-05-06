@@ -39,7 +39,7 @@
     <target name="deploy_images"
             description="Deploy images">
         <!-- ============================================ -->
-        <!-- Repository: web-php-fpm                      -->
+        <!-- Repository: devops-learn                     -->
         <!-- Step 1: Push image                           -->
         <!-- ============================================ -->
         <exec executable="/bin/bash" failonerror="true">

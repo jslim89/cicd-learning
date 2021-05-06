@@ -19,7 +19,7 @@
     <target name="deploy_images"
             description="Deploy images">
         <!-- ============================================ -->
-        <!-- Repository: web-php-fpm                      -->
+        <!-- Repository: devops-learn-base                -->
         <!-- Step 1: Push image                           -->
         <!-- Step 2: Tag latest to image                  -->
         <!-- ============================================ -->
